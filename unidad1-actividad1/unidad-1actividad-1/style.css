@@ -1,0 +1,79 @@
+/* Estilo general */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  background-color: #eaeaea;
+  font-family: Arial, sans-serif;
+}
+
+/* Contenedor general (AGREGADO) */
+.calculadora {
+  background: white;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Display */
+#display {
+  width: 100%;
+  height: 60px;
+  font-size: 28px;
+  text-align: right;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: none;
+  border-radius: 8px;
+  background-color: #f5f5f5;
+}
+
+/* Tabla */
+table {
+  border-collapse: separate;
+  border-spacing: 10px; /* separación entre botones */
+}
+
+/* Botones generales */
+button {
+  width: 60px;
+  height: 60px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none; /* QUITÉ borde negro */
+  border-radius: 10px; /* redondeado */
+  color: white;
+  transition: 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+}
+
+/* Efecto hover */
+button:hover {
+  transform: scale(1.05);
+}
+
+/* Botones números */
+button.numero {
+  background-color: #4a90e2; /* azul más suave */
+}
+
+/* Operadores */
+button.operador {
+  background-color: #7ed957; /* verde más moderno */
+}
+
+/* Igual */
+button.igual {
+  background-color: #f5a623; /* naranja tipo imagen */
+  color: white;
+}
+
+/* Botón borrar */
+button.limpiar {
+  background-color: #e74c3c;
+  width: 100%;
+  height: 50px;
+  border-radius: 8px;
+}
