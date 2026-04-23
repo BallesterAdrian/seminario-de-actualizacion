@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+</head>
+<body>
+    
+</body>
+
+<script>
+
+class Calculadora extends HTMLElement{
+    constructor(){
+        super();
+        this.expresion = "";
+        //definir botones y el contenedor
+        this.contenedor = document.createElement('div');
+        this.display = document.createElement('input');
+        this.btn0 = document.createElement('button');
+        this.btn1 = document.createElement('button');
+        this.btn2 = document.createElement('button');
+        this.btn3 = document.createElement('button');
+        this.btn4 = document.createElement('button');
+        this.btn5 = document.createElement('button');
+        this.btn6 = document.createElement('button');
+        this.btn7 = document.createElement('button'); 
+        this.btn8 = document.createElement('button');
+        this.btn9 = document.createElement('button');
+        this.btnsum = document.createElement('button');
+        this.btnrest = document.createElement('button');
+        this.btndivi = document.createElement('button');
+        this.btnmulti = document.createElement('button');
+        this.btnborrar = document.createElement('button');
+        this.btnpunt = document.createElement('button');
+        this.btnresult = document.createElement('button');
+
+        //tipo
+        this.display.type = 'text';
+        this.display.value = "";
+        this.btn0.innerText = '0';
+        this.btn1.innerText = '1';
+        this.btn2.innerText = '2';
+        this.btn3.innerText = '3';
+        this.btn4.innerText = '4';
+        this.btn5.innerText = '5';
+        this.btn6.innerText = '6';
+        this.btn7.innerText = '7';
+        this.btn8.innerText = '8';
+        this.btn9.innerText = '9';
+        this.btnsum.innerText = '+';
+        this.btnrest.innerText = '-';
+        this.btnmulti.innerText = '*';
+        this.btndivi.innerText = '/';
+        this.btnresult.innerText = '=';
+        this.btnborrar.innerText = 'BORRAR';
+        this.btnpunt.innerText = '.';
+
+
+        //contenedor
+        this.appendChild(this.display);
+        this.contenedor.appendChild(this.btn7);
+        this.contenedor.appendChild(this.btn8);
+        this.contenedor.appendChild(this.btn9);
+        this.contenedor.appendChild(this.btnsum);
+        this.contenedor.appendChild(this.btn4);
+        this.contenedor.appendChild(this.btn5);
+        this.contenedor.appendChild(this.btn6);
+        this.contenedor.appendChild(this.btnrest);
+        this.contenedor.appendChild(this.btn3);
+        this.contenedor.appendChild(this.btn2);
+        this.contenedor.appendChild(this.btn1);
+        this.contenedor.appendChild(this.btnmulti);
+        this.contenedor.appendChild(this.btn0);
+        this.contenedor.appendChild(this.btnpunt);
+        this.contenedor.appendChild(this.btnresult);
+        this.contenedor.appendChild(this.btndivi);
+        this.contenedor.appendChild(this.btnborrar);
+        this.appendChild(this.contenedor);
+
+        //style
+        this.contenedor.style.display = "grid";
+        this.contenedor.style.gridTemplateColumns = "repeat(4, 1fr)";
+        this.contenedor.style.gap = "5px";
+        this.display.style.width = "100%";
+        this.display.style.height = "40px";
+        this.display.style.fontSize = "20px";
+        this.style.width = "250px";
+        this.style.margin = "20px auto";
+        this.style.display = "block";
+        
+        this.btn0.style.backgroundColor = "#4a90e2";
+        this.btn0.style.color = "white";
+        this.btn0.style.borderRadius = "12px";
+        this.btn1.style.backgroundColor = "#4a90e2";
+        this.btn1.style.color = "white";
+        this.btn1.style.borderRadius = "12px";
+        this.btn2.style.backgroundColor = "#4a90e2";
+        this.btn2.style.color = "white";
+        this.btn2.style.borderRadius = "12px";
+        this.btn3.style.backgroundColor = "#4a90e2";
+        this.btn3.style.color = "white";
+        this.btn3.style.borderRadius = "12px";
+        this.btn4.style.backgroundColor = "#4a90e2";
+        this.btn4.style.color = "white";
+        this.btn4.style.borderRadius = "12px";
+        this.btn5.style.backgroundColor = "#4a90e2";
+        this.btn5.style.color = "white";
+        this.btn5.style.borderRadius = "12px";
+        this.btn6.style.backgroundColor = "#4a90e2";
+        this.btn6.style.color = "white";
+        this.btn6.style.borderRadius = "12px";
+        this.btn7.style.backgroundColor = "#4a90e2";
+        this.btn7.style.color = "white";
+        this.btn7.style.borderRadius = "12px";
+        this.btn8.style.backgroundColor = "#4a90e2";
+        this.btn8.style.color = "white";
+        this.btn8.style.borderRadius = "12px";
+        this.btn9.style.backgroundColor = "#4a90e2";
+        this.btn9.style.color = "white";
+        this.btn9.style.borderRadius = "12px";
+        this.btnsum.style.backgroundColor = "#7ed957";
+        this.btnsum.style.color = "white";
+        this.btnsum.style.borderRadius = "12px";
+        this.btnrest.style.backgroundColor = "#7ed957";
+        this.btnrest.style.color = "white";
+        this.btnrest.style.borderRadius = "12px";
+        this.btnmulti.style.backgroundColor = "#7ed957";
+        this.btnmulti.style.color = "white";
+        this.btnmulti.style.borderRadius = "12px";
+        this.btndivi.style.backgroundColor = "#7ed957";
+        this.btndivi.style.color = "white";
+        this.btndivi.style.borderRadius = "12px";
+        this.btnpunt.style.backgroundColor = "#4a90e2";
+        this.btnpunt.style.color = "white";
+        this.btnpunt.style.borderRadius = "12px";
+        this.btnresult.style.backgroundColor = "#ffd966";
+        this.btnresult.style.color = "white";
+        this.btnresult.style.borderRadius = "12px";
+        this.btnborrar.style.backgroundColor = "#ff6b6b";
+        this.btnborrar.style.color = "white";
+        this.btnborrar.style.fontSize = "18px";
+        this.btnborrar.style.textAlign = "center";
+        this.btnborrar.style.gridColumn = "span 4";
+    }
+
+    connectedCallback(){
+    this.btn0.onclick = () => {
+    this.expresion += '0';
+    this.display.value = this.expresion;
+}
+
+this.btn1.onclick = () => {
+    this.expresion += '1';
+        this.display.value = this.expresion;
+    }
+
+    this.btn2.onclick = () => {
+        this.expresion += '2';
+        this.display.value = this.expresion;
+    }
+
+    this.btn3.onclick = () => {
+        this.expresion += '3';
+        this.display.value = this.expresion;
+    }
+
+    this.btn4.onclick = () => {
+        this.expresion += '4';
+        this.display.value = this.expresion;
+    }
+
+    this.btn5.onclick = () => {
+        this.expresion += '5';
+        this.display.value = this.expresion;
+    }
+
+    this.btn6.onclick = () => {
+        this.expresion += '6';
+        this.display.value = this.expresion;
+    }
+
+    this.btn7.onclick = () => {
+        this.expresion += '7';
+        this.display.value = this.expresion;
+    }
+
+    this.btn8.onclick = () => {
+        this.expresion += '8';
+        this.display.value = this.expresion;
+    }
+
+    this.btn9.onclick = () => {
+        this.expresion += '9';
+        this.display.value = this.expresion;
+    }
+    this.btnsum.onclick = () => {
+        this.expresion += '+';
+        this.display.value = this.expresion;
+    }
+    this.btnrest.onclick = () => {
+        this.expresion += '-';
+        this.display.value = this.expresion;
+    }
+    this.btnmulti.onclick = () => {
+        this.expresion += '*';
+        this.display.value = this.expresion;
+    }
+    this.btndivi.onclick = () => {
+        this.expresion += '/';
+        this.display.value = this.expresion;
+    }
+    this.btnresult.onclick = () => {
+        this.display.value = eval(this.expresion);
+        this.expresion = this.display.value;
+    }
+    this.btnborrar.onclick = () => {
+        this.expresion = "";
+        this.display.value = "0";
+    }
+    this.btnpunt.onclick = () => {
+        let partes = this.expresion.split(/[\+\-\*\/]/);
+        let ultimoNumero = partes[partes.length - 1];
+
+        if (!ultimoNumero.includes('.')) {
+            this.expresion += '.';
+            this.display.value = this.expresion;
+        }
+    }
+    }
+}    
+
+customElements.define('x-calculadora', Calculadora);
+
+function main(){
+    let myCustomFrom = new Calculadora();
+    document.body.appendChild(myCustomFrom);
+}
+window.onload = main;
+
+</script>
+
+</html>
