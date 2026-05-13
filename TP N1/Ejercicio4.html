@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat</title>
+</head>
+<body>   
+</body>
+<script>
+class chat extends HTMLElement{
+    constructor(){
+        super();
+        this.input = document.createElement('input');
+        this.bntenviar = document.createElement('button');
+        this.contenedor = document.createElement('div');
+        this.contenedorMensajes = document.createElement('div');
+        this.indexRespuest = 0;
+
+        //valor
+        this.input.type = 'text';
+        this.bntenviar.innerText = '→'; 
+
+
+        //respuestas
+        this.respuesta = [
+            'Buenass',
+            'todo bien y vos?',
+            'Pues no se, me gustaria jugar Marvel rivals o probar el nuevo gacha que salio.',
+            'No, te estoy hablando de NTE es como un gta seguro lo viste en algun reel, ahora te mando uno',
+            'https://youtube.com/shorts/p_yaJcFk4Tg?si=iIecEn-0lNmu2d0u',
+            'Escuche que está buenisimo!'
+        ];
+
+
+        this.appendChild(this.contenedor);
+        this.contenedor.appendChild(this.contenedorMensajes);
+        this.contenedor.appendChild(this.input);
+        this.contenedor.appendChild(this.bntenviar);
+
+
+        //style
+        this.input.style.padding = '10px';
+        this.input.style.borderRadius = '20px';
+        this.input.style.border = 'none';
+        this.input.style.outline = 'none';
+        this.input.style.marginTop = '10px';
+        this.bntenviar.style.marginTop = '10px';
+        this.bntenviar.style.padding = '10px';
+        this.bntenviar.style.border = 'none';
+        this.bntenviar.style.borderRadius = '20px';
+        this.bntenviar.style.backgroundColor = '#128C7E';
+        this.bntenviar.style.color = 'white';
+        this.bntenviar.style.cursor = 'pointer';
+        this.contenedor.style.width = '400px';
+        this.contenedor.style.margin = '30px auto';
+        this.contenedor.style.border = '1px solid #ccc';
+        this.contenedor.style.borderRadius = '10px';
+        this.contenedor.style.padding = '10px';
+        this.contenedor.style.backgroundColor = '#ece5dd';
+        this.contenedor.style.display = 'flex';
+        this.contenedor.style.flexDirection = 'column';
+        this.contenedorMensajes.style.height = '400px';
+        this.contenedorMensajes.style.overflowY = 'auto';
+        this.contenedorMensajes.style.display = 'flex';
+        this.contenedorMensajes.style.flexDirection = 'column';
+        this.contenedorMensajes.style.gap = '10px';
+    }
+
+    connectedCallback(){
+        this.bntenviar.addEventListener('click',() =>{
+            let mensaje = this.input.value;
+            let p = document.createElement('p');
+            p.innerText = mensaje;
+            this.contenedorMensajes.appendChild(p);
+            let indexRespuest = 0;
+            this.respuesta[this.indexRespuest];
+            let respuestaBot = this.respuesta[this.indexRespuest];
+            this.indexRespuest++;
+            let respuestaP = document.createElement('p');
+            respuestaP.innerText = respuestaBot;
+            this.contenedorMensajes.appendChild(respuestaP);
+
+            //style
+            p.style.padding = '10px';
+            p.style.borderRadius = '10px';
+            p.style.maxWidth = '70%';
+            p.style.alignSelf = 'flex-end';
+            p.style.backgroundColor = '#DCF8C6';
+            respuestaP.style.alignSelf = 'flex-start';
+            respuestaP.style.backgroundColor = 'white';
+        });
+    }
+
+
+}
+
+customElements.define('x-chat', chat);
+function main() {
+    let myCustomerForm = new chat();
+    document.body.appendChild(myCustomerForm);
+}
+window.onload = main;
+</script>
+</html>
