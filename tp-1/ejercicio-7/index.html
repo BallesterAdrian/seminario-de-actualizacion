@@ -97,6 +97,11 @@ class clima extends HTMLElement{
         this.btnCaF.onclick = this.updateTemperatureValues.bind(this);
     }
 
+    disconnectedCallback(){
+        this.button.onclick = null;
+        this.btnCaF.onclick = null;
+    }
+    
     render(){
          const table = document.createElement('table');
         table.style.borderCollapse = 'collapse';
