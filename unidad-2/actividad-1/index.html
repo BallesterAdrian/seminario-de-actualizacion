@@ -12,7 +12,7 @@
 class CalcuModel extends EventTarget{
     constructor(){
         super();
-           this.expresion = "";
+        this.expresion = "";
     }
 
     agregar(valor) {
@@ -40,25 +40,33 @@ class CalcuController{
     constructor(model, view){
         this.model = model;
         this.view = view;
-        
         this.iniciar();
     }
+
     iniciar(){
-        this.view.addEventListener("entrada", this.recibirEntrada.bind(this));
+        // Guardamos la referencia de la función bindeada para poder removerla después
+        this._boundRecibirEntrada = this.recibirEntrada.bind(this);
+        this.view.addEventListener("entrada", this._boundRecibirEntrada);
+    }
+
+    release(){
+        // Desasignamos el manejador usando la misma referencia
+        this.view.removeEventListener("entrada", this._boundRecibirEntrada);
+        this._boundRecibirEntrada = null;
     }
 
     recibirEntrada(e){
         var valor = e.detail;
         if(valor == "="){
-        this.calcular();
-    }
-    else if(valor == "BORRAR"){
-        this.borrar();
-    }
-    else{
-        this.model.agregar(valor);
-        this.view.show(this.model.getExpresion());
-    }
+            this.calcular();
+        }
+        else if(valor == "BORRAR"){
+            this.borrar();
+        }
+        else{
+            this.model.agregar(valor);
+            this.view.show(this.model.getExpresion());
+        }
     }
 
     calcular(){
@@ -71,14 +79,13 @@ class CalcuController{
         this.model.borrar();
         this.view.show("");
     }
-
 }
 
 class CalcuView extends HTMLElement{
     constructor(){
         super();
-         this.expresion = "";
-        //definir botones y el contenedor
+        this.expresion = "";
+        // Definir botones y el contenedor
         this.contenedor = document.createElement('div');
         this.display = document.createElement('input');
         this.btn0 = document.createElement('button');
@@ -88,7 +95,7 @@ class CalcuView extends HTMLElement{
         this.btn4 = document.createElement('button');
         this.btn5 = document.createElement('button');
         this.btn6 = document.createElement('button');
-        this.btn7 = document.createElement('button'); 
+        this.btn7 = document.createElement('button');
         this.btn8 = document.createElement('button');
         this.btn9 = document.createElement('button');
         this.btnsum = document.createElement('button');
@@ -99,7 +106,7 @@ class CalcuView extends HTMLElement{
         this.btnpunt = document.createElement('button');
         this.btnresult = document.createElement('button');
 
-        //tipo
+        // Tipo
         this.display.type = 'text';
         this.display.value = "";
         this.btn0.innerText = '0';
@@ -120,7 +127,7 @@ class CalcuView extends HTMLElement{
         this.btnborrar.innerText = 'BORRAR';
         this.btnpunt.innerText = '.';
 
-         //contenedor
+        // Contenedor
         this.appendChild(this.display);
         this.contenedor.appendChild(this.btn7);
         this.contenedor.appendChild(this.btn8);
@@ -141,7 +148,7 @@ class CalcuView extends HTMLElement{
         this.contenedor.appendChild(this.btnborrar);
         this.appendChild(this.contenedor);
 
-        //style
+        // Style
         this.contenedor.style.display = "grid";
         this.contenedor.style.gridTemplateColumns = "repeat(4, 1fr)";
         this.contenedor.style.gap = "5px";
@@ -151,7 +158,7 @@ class CalcuView extends HTMLElement{
         this.style.width = "250px";
         this.style.margin = "20px auto";
         this.style.display = "block";
-        //style de los botones
+        // Style de los botones
         this.btn0.style.backgroundColor = "#4a90e2";
         this.btn0.style.color = "white";
         this.btn0.style.borderRadius = "12px";
@@ -208,23 +215,51 @@ class CalcuView extends HTMLElement{
     }
 
     connectedCallback(){
-        this.btn0.onclick = this.manejador.bind(this); 
-        this.btn1.onclick = this.manejador.bind(this); 
-        this.btn2.onclick = this.manejador.bind(this); 
-        this.btn3.onclick = this.manejador.bind(this); 
-        this.btn4.onclick = this.manejador.bind(this); 
-        this.btn5.onclick = this.manejador.bind(this); 
-        this.btn6.onclick = this.manejador.bind(this); 
-        this.btn7.onclick = this.manejador.bind(this); 
-        this.btn8.onclick = this.manejador.bind(this); 
-        this.btn9.onclick = this.manejador.bind(this); 
-        this.btnsum.onclick = this.manejador.bind(this); 
-        this.btnrest.onclick = this.manejador.bind(this); 
-        this.btndivi.onclick = this.manejador.bind(this); 
-        this.btnmulti.onclick = this.manejador.bind(this); 
-        this.btnresult.onclick = this.manejador.bind(this); 
-        this.btnpunt.onclick = this.manejador.bind(this); 
-        this.btnborrar.onclick = this.manejador.bind(this); 
+        // Guardamos la referencia del manejador bindeado
+        this._boundManejador = this.manejador.bind(this);
+
+        // Asignamos los manejadores con addEventListener (más prolijo que onclick)
+        this.btn0.addEventListener('click', this._boundManejador);
+        this.btn1.addEventListener('click', this._boundManejador);
+        this.btn2.addEventListener('click', this._boundManejador);
+        this.btn3.addEventListener('click', this._boundManejador);
+        this.btn4.addEventListener('click', this._boundManejador);
+        this.btn5.addEventListener('click', this._boundManejador);
+        this.btn6.addEventListener('click', this._boundManejador);
+        this.btn7.addEventListener('click', this._boundManejador);
+        this.btn8.addEventListener('click', this._boundManejador);
+        this.btn9.addEventListener('click', this._boundManejador);
+        this.btnsum.addEventListener('click', this._boundManejador);
+        this.btnrest.addEventListener('click', this._boundManejador);
+        this.btndivi.addEventListener('click', this._boundManejador);
+        this.btnmulti.addEventListener('click', this._boundManejador);
+        this.btnresult.addEventListener('click', this._boundManejador);
+        this.btnpunt.addEventListener('click', this._boundManejador);
+        this.btnborrar.addEventListener('click', this._boundManejador);
+    }
+
+    disconnectedCallback(){
+        // Desasignamos los manejadores usando la misma referencia guardada
+        this.btn0.removeEventListener('click', this._boundManejador);
+        this.btn1.removeEventListener('click', this._boundManejador);
+        this.btn2.removeEventListener('click', this._boundManejador);
+        this.btn3.removeEventListener('click', this._boundManejador);
+        this.btn4.removeEventListener('click', this._boundManejador);
+        this.btn5.removeEventListener('click', this._boundManejador);
+        this.btn6.removeEventListener('click', this._boundManejador);
+        this.btn7.removeEventListener('click', this._boundManejador);
+        this.btn8.removeEventListener('click', this._boundManejador);
+        this.btn9.removeEventListener('click', this._boundManejador);
+        this.btnsum.removeEventListener('click', this._boundManejador);
+        this.btnrest.removeEventListener('click', this._boundManejador);
+        this.btndivi.removeEventListener('click', this._boundManejador);
+        this.btnmulti.removeEventListener('click', this._boundManejador);
+        this.btnresult.removeEventListener('click', this._boundManejador);
+        this.btnpunt.removeEventListener('click', this._boundManejador);
+        this.btnborrar.removeEventListener('click', this._boundManejador);
+
+        // Liberamos la referencia
+        this._boundManejador = null;
     }
 
     manejador(event){
