@@ -82,6 +82,10 @@ class clima extends HTMLElement{
         this.button.onclick = this.showPromedios.bind(this);
     }
 
+    disconnectedCallback(){
+        this.button.onclick = null;
+    }
+
     render(){
          const table = document.createElement('table');
         table.style.borderCollapse = 'collapse';
