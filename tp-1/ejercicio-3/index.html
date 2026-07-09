@@ -120,12 +120,17 @@ class equalizer extends HTMLElement{
         );
     }
     connectedCallback(){
-
         for(let index = 0; index < this.sliders.length; index++){
-            this.sliders[index].oninput = this.handleSliderInput.bind(this);
+            this.sliders[index].addEventListener("input", this.sliderHandler);
         }
     }
 
+    disconnectedCallback(){
+        for(let index = 0; index < this.sliders.length; index++){
+            this.sliders[index].removeEventListener("input", this.sliderHandler);
+        }
+    }   
+    
     getData(){
         return this.data;
     }   
