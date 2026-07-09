@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <title>Calculadora</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="Calculadora">
+        <input type="text" id="display" value="" readonly />
+
+        <table>
+            <tr>
+                <td><button class="numero" onclick="addNumber('7')">7</button></td>
+                <td><button class="numero" onclick="addNumber('8')">8</button></td>
+                <td><button class="numero" onclick="addNumber('9')">9</button></td>
+                <td><button class="operador" onclick="addoperator('+')">+</button></td>
+            </tr>
+            <tr>
+                <td><button class="numero" onclick="addNumber('4')">4</button></td>
+                <td><button class="numero" onclick="addNumber('5')">5</button></td>
+                <td><button class="numero" onclick="addNumber('6')">6</button></td>
+                <td><button class="operador" onclick="addoperator('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button class="numero" onclick="addNumber('1')">1</button></td>
+                <td><button class="numero" onclick="addNumber('2')">2</button></td>
+                <td><button class="numero" onclick="addNumber('3')">3</button></td>
+                <td><button class="operador" onclick="addoperator('*')">x</button></td>
+            </tr>
+            <tr>
+                <td><button class="numero" onclick="addNumber('0')">0</button></td>
+                <td><button class="numero" onclick="addDecimal()">.</button></td>
+                <td><button class="igual" onclick="calcular()">=</button></td>
+                <td><button class="operador" onclick="addoperator('/')">/</button></td>
+            </tr>
+            <tr>
+                <td colspan="4"><button class="limpiar" onclick="clean()">BORRAR</button></td>
+            </tr>
+        </table>
+
+        </div>
+        <script src="logica.js"></script>
+    </body>
+</html>
