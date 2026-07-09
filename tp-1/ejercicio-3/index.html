@@ -108,7 +108,6 @@ class equalizer extends HTMLElement{
     this.container.style.backgroundColor = '#1e1e1e';
     this.container.style.borderRadius = '8px';
     this.container.style.alignItems = 'flex-end';
-    this.sliderHandler = this.handleSliderInput.bind(this);
  }
     handleSliderInput(event){
 
@@ -120,17 +119,18 @@ class equalizer extends HTMLElement{
             this.data[index].freq + ' → ' + slider.value
         );
     }
+
     connectedCallback(){
         for(let index = 0; index < this.sliders.length; index++){
-            this.sliders[index].addEventListener("input", this.sliderHandler);
+            this.sliders[index].oninput = this.handleSliderInput.bind(this);
         }
     }
 
     disconnectedCallback(){
         for(let index = 0; index < this.sliders.length; index++){
-            this.sliders[index].removeEventListener("input", this.sliderHandler);
+            this.sliders[index].oninput = null;
         }
-    }   
+    }
     
     getData(){
         return this.data;
