@@ -108,6 +108,7 @@ class equalizer extends HTMLElement{
     this.container.style.backgroundColor = '#1e1e1e';
     this.container.style.borderRadius = '8px';
     this.container.style.alignItems = 'flex-end';
+    this.sliderHandler = this.handleSliderInput.bind(this);
  }
     handleSliderInput(event){
 
