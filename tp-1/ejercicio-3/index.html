@@ -8,7 +8,7 @@
 <body>   
 </body>
 <script>
-class equalizer extends HTMLElement{
+class EqualizerView extends HTMLElement{
     constructor(){
         super();
         //sliders
@@ -44,9 +44,8 @@ class equalizer extends HTMLElement{
         ];
 
         //rango del slider
-       for(let index = 0; index < this.sliders.length; index++){
-
-            let slider = this.sliders[index];
+        for(var index = 0; index < this.sliders.length; index++){
+            var slider = this.sliders[index];
             slider.type = 'range';
             slider.min = -12;
             slider.max = 12;
@@ -58,61 +57,60 @@ class equalizer extends HTMLElement{
             slider.style.background = '#555';
         }
 
-    //data
-    this.data = [
-        { freq: '32Hz', value: 0 },
-        { freq: '64Hz', value: 0 },
-        { freq: '130Hz', value: 0},
-        { freq: '260Hz', value: 0},
-        { freq: '500Hz', value: 0},
-        { freq: '1k', value: 0},
-        { freq: '2k', value: 0},
-        { freq: '4k', value: 0},
-        { freq: '8.3k', value: 0},
-        { freq: '16.5k', value: 0}
-    ];
+        //data
+        this.data = [
+            { freq: '32Hz', value: 0 },
+            { freq: '64Hz', value: 0 },
+            { freq: '130Hz', value: 0},
+            { freq: '260Hz', value: 0},
+            { freq: '500Hz', value: 0},
+            { freq: '1k', value: 0},
+            { freq: '2k', value: 0},
+            { freq: '4k', value: 0},
+            { freq: '8.3k', value: 0},
+            { freq: '16.5k', value: 0}
+        ];
 
-    for(let index = 0; index < this.sliders.length; index++){
-        
-        let slider = this.sliders[index];
-        let bandContainer = document.createElement('div');
-        bandContainer.style.display = 'flex';
-        bandContainer.style.flexDirection = 'column';
-        bandContainer.style.alignItems = 'center';
+        for(var index = 0; index < this.sliders.length; index++){
+            var slider = this.sliders[index];
+            var bandContainer = document.createElement('div');
+            bandContainer.style.display = 'flex';
+            bandContainer.style.flexDirection = 'column';
+            bandContainer.style.alignItems = 'center';
 
-        let valueLabel = document.createElement('p');
-        valueLabel.textContent = `${slider.value}dB`;
+            var valueLabel = document.createElement('p');
+            valueLabel.textContent = slider.value + 'dB';
 
-        let freqLabel = document.createElement('p');
-        freqLabel.textContent = this.data[index].freq;
+            var freqLabel = document.createElement('p');
+            freqLabel.textContent = this.data[index].freq;
 
-        slider.dataset.index = index;
-        slider.valueLabel = valueLabel;
-        bandContainer.appendChild(freqLabel);
-        bandContainer.appendChild(slider);
-        bandContainer.appendChild(valueLabel);
-        this.container.appendChild(bandContainer);
-        //style 
-        valueLabel.style.color = 'white';
-        freqLabel.style.color = 'white';
-        valueLabel.style.fontSize = '12px';
-        freqLabel.style.fontSize = '12px';
-        bandContainer.style.display = 'flex';
-        bandContainer.style.flexDirection = 'column';
-        bandContainer.style.alignItems = 'center';
+            slider.dataset.index = index;
+            slider.valueLabel = valueLabel;
+            bandContainer.appendChild(freqLabel);
+            bandContainer.appendChild(slider);
+            bandContainer.appendChild(valueLabel);
+            this.container.appendChild(bandContainer);
+            //style 
+            valueLabel.style.color = 'white';
+            freqLabel.style.color = 'white';
+            valueLabel.style.fontSize = '12px';
+            freqLabel.style.fontSize = '12px';
+            bandContainer.style.display = 'flex';
+            bandContainer.style.flexDirection = 'column';
+            bandContainer.style.alignItems = 'center';
+        }
+
+        //style del contenedor
+        this.container.style.display = 'flex';
+        this.container.style.gap = '11px';
+        this.container.style.backgroundColor = '#1e1e1e';
+        this.container.style.borderRadius = '8px';
+        this.container.style.alignItems = 'flex-end';
     }
 
-    //style del contenedor
-    this.container.style.display = 'flex';
-    this.container.style.gap = '11px';
-    this.container.style.backgroundColor = '#1e1e1e';
-    this.container.style.borderRadius = '8px';
-    this.container.style.alignItems = 'flex-end';
- }
     handleSliderInput(event){
-
-        let slider = event.target;
-        let index = slider.dataset.index;
+        var slider = event.target;
+        var index = slider.dataset.index;
         this.data[index].value = slider.value;
         slider.valueLabel.textContent = slider.value + 'dB';
         console.log(
@@ -121,24 +119,29 @@ class equalizer extends HTMLElement{
     }
 
     connectedCallback(){
-        for(let index = 0; index < this.sliders.length; index++){
-            this.sliders[index].oninput = this.handleSliderInput.bind(this);
+        // Guardamos la referencia del manejador bindeado
+        this._boundHandleSliderInput = this.handleSliderInput.bind(this);
+        
+        for(var index = 0; index < this.sliders.length; index++){
+            this.sliders[index].addEventListener('input', this._boundHandleSliderInput);
         }
     }
 
     disconnectedCallback(){
-        for(let index = 0; index < this.sliders.length; index++){
-            this.sliders[index].oninput = null;
+        // Removemos los event listeners usando la misma referencia
+        for(var index = 0; index < this.sliders.length; index++){
+            this.sliders[index].removeEventListener('input', this._boundHandleSliderInput);
         }
+        // Liberamos la referencia
+        this._boundHandleSliderInput = null;
     }
     
     getData(){
         return this.data;
     }   
 
-   render() {
-       for(let index = 0; index < this.sliders.length; index++){
-
+    render() {
+        for(var index = 0; index < this.sliders.length; index++){
             this.sliders[index].value = this.data[index].value;
         }
     }
@@ -149,11 +152,11 @@ class equalizer extends HTMLElement{
     }
 }
 
-    customElements.define('x-equalizer', equalizer);
+customElements.define('x-equalizer', EqualizerView);
 
 function main() {
-    let myCustomerForm = new equalizer();
-    document.body.appendChild(myCustomerForm)
+    var equalizer = new EqualizerView();
+    document.body.appendChild(equalizer);
 }
 window.onload = main;
 </script>
