@@ -147,15 +147,14 @@ class Controller {
             let x = Math.floor(Math.random() * 650) + 50;
         let y = Math.floor(Math.random() * 450) + 50;
 
-        // Generamos un número del 0 al 2 para elegir qué tipo de figura crear
         let tipoAleatorio = Math.floor(Math.random() * 3);
 
         if (tipoAleatorio === 0) {
-            // 1. Círculo
+         
             nuevaFigura = DrawCirculo(x, y, 30);
 
         } else if (tipoAleatorio === 1) {
-            // 2. Polígono: Triángulo
+           
             nuevaFigura = DrawPoligono([
                 { x: x, y: y },
                 { x: x + 40, y: y + 60 },
@@ -163,7 +162,7 @@ class Controller {
             ]);
 
         } else {
-            // 3. Polígono: Cuadrado
+           
             let lado = 50;
             nuevaFigura = DrawPoligono([
                 { x: x, y: y },
