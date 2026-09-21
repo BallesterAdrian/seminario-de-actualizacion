@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 2.0" />
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+class Model extends EventTarget {
+    constructor() {
+        super();
+       this._lista = []; 
+       
+    }
+    
+    addPuntos(x, y){
+        let punto = {
+            X: x,
+            Y: y
+        };
+        this._lista.push(punto);
+    }
+
+    getPuntos(){
+        return this._lista;
+    }
+
+    changed() {
+        this.dispatchEvent(new CustomEvent('changed'));
+    }
+}
+
+class View extends HTMLElement {
+    constructor() 
+    {
+        super();
+        this._canvas = document.createElement('canvas');
+        this._canvas.width = 800;
+        this._canvas.height = 600;
+        this.inputX = document.createElement('input');
+        this.inputY = document.createElement('input');
+        this.container = document.createElement('div');
+        this.btnFinish = document.createElement('button');
+        this.btnsiguiente = document.createElement('button');
+        this._canvas.style.border = '1px solid black';
+      
+        this.ctx = this._canvas.getContext('2d');
+    
+        
+        this.inputX.placeholder = "Escribe el valor de X";
+        this.inputY.placeholder = "Escribe el valor de Y";
+        this.btnsiguiente.innerText = "siguiente punto";
+        this.btnFinish.innerText = "formar figura poligonal";
+
+        
+        
+        this.appendChild(this.container);
+        this.appendChild(this._canvas);
+        this.container.appendChild(this.inputX);
+        this.container.appendChild(this.inputY);
+        this.container.appendChild(this.btnsiguiente);
+        this.container.appendChild(this.btnFinish);
+        
+    }
+
+    DrawPoligono(puntos){
+        this.ctx.beginPath();
+        this.ctx.moveTo(400, 300);
+        
+        for(let punto of puntos){
+            this.ctx.lineTo(punto.X, punto.Y);
+        }
+        
+		this.ctx.stroke();
+        this.ctx.closePath();
+    }
+    set value(x) {
+       
+    }
+   
+    get value() {
+        
+    }
+    connectedCallback() {
+       console.log('Canvas agregado...');
+        this.btnsiguiente.onclick = this._onSave.bind(this);
+        this.btnFinish.onclick = this._onFinish.bind(this);
+    }
+    
+    disconnectedCallback() {
+        this.btnsiguiente.onclick = null;
+        this.btnFinish.onclick = null;
+    }
+    
+    _onSave() {
+        let X = this.inputX.value;
+        let Y = this.inputY.value;
+       
+        let Punto = new CustomEvent('request', {
+            detail: {
+                action: "next",
+                X: X,
+                Y: Y
+            }
+        });
+        this.dispatchEvent(Punto);
+        console.log(Punto.detail);
+
+    }
+
+    _onFinish(){
+       let evento = new CustomEvent('request', {
+        detail: {
+            action: "finish"
+            }
+        });
+        this.dispatchEvent(evento);
+    }
+}
+customElements.define('x-view', View);
+
+
+class Controller {
+    constructor(view, model) {
+        this._view = view;
+        this._model = model;
+        this._onModelChanged = this.onModelChanged.bind(this);
+        this._onViewRequest = this.onViewRequest.bind(this);
+    }
+    enable() {
+        this._model.addEventListener('changed', this._onModelChanged);
+        this._view.addEventListener('request', this._onViewRequest);
+    }
+    disable() {
+        this._model.removeEventListener('changed', this._onModelChanged);
+        this._view.removeEventListener('request', this._onViewRequest);
+    }
+    onModelChanged() {
+        
+    }
+    onViewRequest(event) {
+        if(event.detail.action === "next"){
+            let X = event.detail.X;
+            let Y = event.detail.Y;
+
+            this._model.addPuntos(X, Y);
+            console.log(this._model._lista.length);
+        }
+
+        if(event.detail.action === "finish"){
+            let puntos = this._model.getPuntos();
+            console.log(puntos);
+            this._view.DrawPoligono(puntos);
+        }      
+    }
+}
+
+function main() {
+    let myModel = new Model();
+    let myView = new View();
+    let myController = new Controller(myView, myModel);
+    myController.enable();
+    document.body.appendChild(myView);
+}
+window.onload = main;
+
+</script>
+
+</html>

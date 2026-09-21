@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <title>Ejercicios Unidad 4</title>
+
+    <script src="MVCCanvas.js"></script>
+    <script src="ejercicio-6.js"></script>
+</head>
+
+<body>
+
+<script>
+function main() {
+    let modelo = new Model();
+    let view = new View();
+    let controlador = new Controller(view, modelo);
+
+    controlador.enable();
+
+    document.body.appendChild(view);
+}
+
+window.onload = main;
+</script>
+
+</body>
+</html>
