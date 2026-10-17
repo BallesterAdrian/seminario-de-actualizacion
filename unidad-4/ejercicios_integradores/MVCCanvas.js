@@ -24,16 +24,17 @@ class View extends HTMLElement {
     {
         super();
         this._canvas = document.createElement('canvas');
+        //botones
         this.btnCargarFigure = document.createElement('button');
         this.btnClear = document.createElement('button');
-        this.btnCake = document.createElement('button'); // Lo mantenemos por si lo querés usar
-        
+        this.btnCake = document.createElement('button'); 
+        //inputs
         this.inputGrosor = document.createElement('input');
         this.inpuTypeLinea = document.createElement('input');
-
+        //select
         this.selectEjercicio = document.createElement('select');
         
-        // Contenedores separados para cada ejercicio
+        // Contenedores 
         this.contenedorEj6 = document.createElement('div');
         this.contenedorEj12 = document.createElement('div');
         this.contenedorEj19 = document.createElement('div');
@@ -61,7 +62,7 @@ class View extends HTMLElement {
         this.inputGrosor.value = 1; 
         this.inpuTypeLinea.placeholder = "Linea punteada o continua";
         this.inpuTypeLinea.value = 'continua'; 
-        
+
         this.btnCargarFigure.innerText = "Cargar figura";
         this.btnClear.innerText = "Limpiar";
         this.btnCake.innerText = "Cargar Torta";
@@ -78,6 +79,9 @@ class View extends HTMLElement {
         let opt19 = document.createElement('option');
         opt19.value = 'ej19';
         opt19.textContent = 'Ejercicio 19';
+
+        this.contenedorEj12.style.display = 'none';
+        this.contenedorEj19.style.display = 'none';
         
         //appendChilds
         this.selectEjercicio.appendChild(opt6);
@@ -91,10 +95,6 @@ class View extends HTMLElement {
         this.contenedorEj19.appendChild(this.selectTipoFigura);
         this.contenedorEj19.appendChild(this.btnCake);
         this.contenedorEj19.appendChild(this.contenedorUNI);
-
-        this.contenedorEj12.style.display = 'none';
-        this.contenedorEj19.style.display = 'none';
-
         this.appendChild(this.selectEjercicio);
         this.appendChild(this.contenedorEj6);
         this.appendChild(this.contenedorEj12);
@@ -161,23 +161,16 @@ class View extends HTMLElement {
             this.contenedorEj6.style.display = 'block';
             this.contenedorEj12.style.display = 'none';
             this.contenedorEj19.style.display = 'none';
-            this.contenedorEj6.appendChild(this.btnCargarFigure);
-            this.contenedorEj6.appendChild(this.btnClear);
             
         } else if (ejercicio === 'ej12') {
             this.contenedorEj6.style.display = 'none';
             this.contenedorEj12.style.display = 'block';
             this.contenedorEj19.style.display = 'none';
-            this.contenedorEj12.appendChild(this.btnCargarFigure);
-            this.contenedorEj12.appendChild(this.btnClear);
             
         } else if (ejercicio === 'ej19') {
             this.contenedorEj6.style.display = 'none';
             this.contenedorEj12.style.display = 'none';
             this.contenedorEj19.style.display = 'block';
-            this.contenedorEj19.appendChild(this.btnCargarFigure);
-            this.contenedorEj19.appendChild(this.btnCake);
-            this.contenedorEj19.appendChild(this.btnClear);
         }
     }
     
