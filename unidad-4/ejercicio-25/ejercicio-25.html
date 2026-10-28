@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 2.0" />
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+class Model extends EventTarget {
+    constructor() {
+        super();
+        
+    }
+   
+    changed() {
+        this.dispatchEvent(new CustomEvent('changed'));
+    }
+}
+
+class View extends HTMLElement {
+    constructor() 
+    {
+        super();
+        this._canvas = document.createElement('canvas');
+        this._canvas.width = 600;
+        this._canvas.height = 600;
+        this._canvas.style.border = '1px solid black';
+        this.btnSave = document.createElement('button');
+        this.btnRestore = document.createElement('button');
+        this.ctx = this._canvas.getContext('2d');
+        this.x = 0;
+        this.y = 0;
+        this.ancho = this._canvas.width;
+        this.alto = this._canvas.height;
+        this.img = new Image();
+        this.img.src = 'images.jpe';
+
+        this.btnSave.innerText = 'Cargar configuracion';
+        this.btnRestore.innerText = 'Restaurar';
+        this.UploadImage();
+
+        this.appendChild(this._canvas);
+        this.appendChild(this.btnSave);
+        this.appendChild(this.btnRestore);
+    }
+
+    UploadImage(){
+        this.img.onload = () =>{
+            this.ctx.drawImage(this.img, this.x, this.y, this.ancho, this.alto);
+        };
+    }
+
+    NewConfig(){
+        this.ctx.save();
+        this.ctx.filter = 'brightness(120%) contrast(150%) blur(2px)';
+        this.ctx.drawImage(this.img, this.x, this.y, this.ancho, this.alto);
+
+        console.log('Configuración cargada');
+    }
+
+    Restore(){
+        this.ctx.restore();
+        this.ctx.filter = null;
+        this.ctx.drawImage(this.img, this.x, this.y, this.ancho, this.alto);
+        console.log('Volviendo a la configuracion base');  
+    }
+
+    set value(x) {
+       
+    }
+   
+    get value() {
+        
+    }
+    connectedCallback() {
+        this.btnSave.onclick = this.NewConfig.bind(this);
+        this.btnRestore.onclick = this.Restore.bind(this);
+        console.log('Canvas agregado...');
+    }
+    disconnectedCallback() {
+        this.btnSave.onclick = null;
+        this.btnRestore.onclick = null;
+    }
+    
+    _onSave() {
+       
+    }
+}
+customElements.define('x-view', View);
+
+
+class Controller {
+    constructor(view, model) {
+        this._view = view;
+        this._model = model;
+        this._onModelChanged = this.onModelChanged.bind(this);
+        this._onViewRequest = this.onViewRequest.bind(this);
+    }
+    enable() {
+        this._model.addEventListener('changed', this._onModelChanged);
+        this._view.addEventListener('request', this._onViewRequest);
+    }
+    disable() {
+        this._model.removeEventListener('changed', this._onModelChanged);
+        this._view.removeEventListener('request', this._onViewRequest);
+    }
+    onModelChanged() {
+        
+    }
+    onViewRequest(event) {
+       
+    }
+}
+
+function main() {
+    let myModel = new Model();
+    let myView = new View();
+    let myController = new Controller(myView, myModel);
+    myController.enable();
+    document.body.appendChild(myView);
+}
+window.onload = main;
+
+</script>
+
+</html>

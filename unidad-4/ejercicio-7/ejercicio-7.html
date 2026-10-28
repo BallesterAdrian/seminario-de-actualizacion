@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="utf-8" />
+<title>untitled</title>
+<meta name="generator" content="Geany 2.0" />
+</head>
+
+<body>
+
+</body>
+
+<script type="text/javascript">
+
+class Model extends EventTarget {
+    constructor() {
+        super();
+        
+    }
+   
+    changed() {
+        this.dispatchEvent(new CustomEvent('changed'));
+    }
+}
+
+class View extends HTMLElement {
+    constructor() 
+    {
+        super();
+        this._canvas = document.createElement('canvas');
+        this._canvas.width = 500;
+        this._canvas.height = 500;
+        this._canvas.style.border = '1px solid black';
+
+        
+        this.ctx = this._canvas.getContext('2d');
+        
+        this.fin = 0;
+        this.objeto = [0.30, 0.50, 0.10, 0.10];
+        this.Xc = this._canvas.width / 2;
+        this.Yc = this._canvas.height / 2;
+        this.Radio = this._canvas.width / 2;
+        this.Ai = 0;
+        this.Af = 2 * Math.PI;
+        
+        this.appendChild(this._canvas);
+    }
+ 
+    DrawCake(){
+        this.ctx.font = "14px Arial";
+        this.ctx.textAlign = "center";
+        this.ctx.textBaseline = "middle";
+        this.inicio = 0;
+    
+    for(let i = 0; i < this.objeto.length; i++){
+        this.fin = this.inicio + (this.objeto[i] * this.Af);
+        
+        let medio = (this.inicio + this.fin) / 2;
+        
+        this.ctx.beginPath();
+        this.ctx.moveTo(this.Xc, this.Yc);
+        this.ctx.arc(this.Xc, this.Yc, this.Radio, this.inicio, this.fin);       
+        this.ctx.stroke();
+
+        let RadioText = this.Radio * 0.65;
+        
+        this.Xt = this.Xc + RadioText * Math.cos(medio);
+        this.Yt = this.Yc + RadioText * Math.sin(medio);
+        
+        let Textprocentuado = (this.objeto[i] * 100) + "%";
+        this.ctx.fillText(Textprocentuado, this.Xt, this.Yt);
+        this.inicio = this.fin;
+    }
+    this.ctx.closePath();
+}
+
+    set value(x) {
+       
+    }
+   
+    get value() {
+        
+    }
+    connectedCallback() {
+        console.log('Canvas agregado...');
+        this.DrawCake();
+    }
+    disconnectedCallback() {
+        
+    }
+    
+    _onSave() {
+       
+    }
+}
+customElements.define('x-view', View);
+
+
+class Controller {
+    constructor(view, model) {
+        this._view = view;
+        this._model = model;
+        this._onModelChanged = this.onModelChanged.bind(this);
+        this._onViewRequest = this.onViewRequest.bind(this);
+    }
+    enable() {
+        this._model.addEventListener('changed', this._onModelChanged);
+        this._view.addEventListener('request', this._onViewRequest);
+    }
+    disable() {
+        this._model.removeEventListener('changed', this._onModelChanged);
+        this._view.removeEventListener('request', this._onViewRequest);
+    }
+    onModelChanged() {
+        
+    }
+    onViewRequest(event) {
+       
+    }
+}
+
+function main() {
+    let myModel = new Model();
+    let myView = new View();
+    let myController = new Controller(myView, myModel);
+    myController.enable();
+    document.body.appendChild(myView);
+}
+window.onload = main;
+
+</script>
+
+</html>
